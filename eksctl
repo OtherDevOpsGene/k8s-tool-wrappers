@@ -1,3 +1,10 @@
 #! /bin/bash
 
-docker run --rm -v "${HOME}/.aws:/root/.aws" -v "${HOME}/.kube:/root/.kube" weaveworks/eksctl "${@}"
+kube_dir="${KUBECONFIG:-${HOME}/.kube}"
+
+unset profile_opt
+if [[ -n ${AWS_PROFILE} ]]; then
+  profile_opt="-e AWS_PROFILE=${AWS_PROFILE}"
+fi
+
+docker run --rm -v "${HOME}/.aws:/root/.aws" -v "${kube_dir}:/root/.kube" ${profile_opt} weaveworks/eksctl "${@}"
