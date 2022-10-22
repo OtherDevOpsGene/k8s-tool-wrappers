@@ -1,0 +1,8 @@
+#! /bin/bash
+
+unset profile_opt
+if [[ -n ${AWS_PROFILE} ]]; then
+  profile_opt="-e AWS_PROFILE=${AWS_PROFILE}"
+fi
+
+docker run --rm -i -v "${HOME}/.aws:/root/.aws" -v "$(pwd):/aws" ${profile_opt} amazon/aws-cli "${@}"
