@@ -1,3 +1,8 @@
 #! /bin/bash
 
-docker run --rm --tty -v "$(pwd)":/code --workdir /code bridgecrew/checkov "${@}"
+version=${CHECKOV_VERSION:-'latest'}
+if [[ -n ${UPDATE_CHECKOV} ]]; then
+  docker pull bridgecrew/checkov:${version}
+fi
+
+docker run --rm --tty -v "$(pwd)":/work --workdir /work bridgecrew/checkov:${version} "${@}"

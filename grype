@@ -1,3 +1,8 @@
 #! /bin/bash
 
-docker run -v "$(pwd)":/dir -v grype-repo:/.cache/ --workdir /dir --rm anchore/grype "${@}"
+version=${GRYPE_VERSION:-'latest'}
+if [[ -n ${UPDATE_GRYPE} ]]; then
+  docker pull anchore/grype:${version}
+fi
+
+docker run --rm -v grype-repo:/.cache/ -v "$(pwd)":/work --workdir /work anchore/grype:${version} "${@}"
