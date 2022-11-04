@@ -5,4 +5,4 @@ if [[ -n ${UPDATE_TRIVY} ]]; then
   docker pull aquasec/trivy:${version}
 fi
 
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy-repo:/.cache/ -v "$(pwd)":/work --workdir /work aquasec/trivy:${version} "${@}"
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy-repo:/root/.cache/ -v "$(pwd)":/work --workdir /work aquasec/trivy:${version} "${@}"
