@@ -3,7 +3,11 @@
 kube_dir="${KUBECONFIG:-${HOME}/.kube}"
 
 version=${EKSCTL_VERSION:-'latest'}
-if [[ -n ${UPDATE_EKSCTL} ]]; then
+
+last_check=/var/tmp/check-eksctl-${version}
+if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
+  touch ${last_check}
+  echo "Updating weaveworks/eksctl image if necessary..." >&2
   docker pull weaveworks/eksctl:${version}
 fi
 

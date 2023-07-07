@@ -1,5 +1,14 @@
 #! /bin/bash
 
+version=${AWSCLI_VERSION:-'latest'}
+
+last_check=/var/tmp/check-awscli-${version}
+if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
+  touch ${last_check}
+  echo "Updating amazon/aws-cli image if necessary..." >&2
+  docker pull amazon/aws-cli:${version}
+fi
+
 unset profile_opt
 if [[ -n ${AWS_PROFILE} ]]; then
   profile_opt="-e AWS_PROFILE=${AWS_PROFILE}"
@@ -10,4 +19,4 @@ if [[ -n ${AWS_CLI_AUTO_PROMPT} ]]; then
   profile_opt="-e AWS_CLI_AUTO_PROMPT=${AWS_CLI_AUTO_PROMPT}"
 fi
 
-docker run --rm -i -v "${HOME}/.aws:/root/.aws" -v "$(pwd):/aws" ${profile_opt} ${auto_prompt_opt} amazon/aws-cli "${@}"
+docker run --rm -i -v "${HOME}/.aws:/root/.aws" -v "$(pwd):/aws" ${profile_opt} ${auto_prompt_opt} amazon/aws-cli:${version} "${@}"

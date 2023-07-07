@@ -1,7 +1,11 @@
 #! /bin/bash
 
 version=${TRIVY_VERSION:-'latest'}
-if [[ -n ${UPDATE_TRIVY} ]]; then
+
+last_check=/var/tmp/check-trivy-${version}
+if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
+  touch ${last_check}
+  echo "Updating aquasec/trivy image if necessary..." >&2
   docker pull aquasec/trivy:${version}
 fi
 

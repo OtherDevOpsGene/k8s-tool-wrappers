@@ -1,7 +1,11 @@
 #! /bin/bash
 
 version=${SYFT_VERSION:-'latest'}
-if [[ -n ${UPDATE_SYFT} ]]; then
+
+last_check=/var/tmp/check-syft-${version}
+if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
+  touch ${last_check}
+  echo "Updating anchore/syft image if necessary..." >&2
   docker pull anchore/syft:${version}
 fi
 

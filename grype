@@ -1,8 +1,12 @@
 #! /bin/bash
 
 version=${GRYPE_VERSION:-'latest'}
-if [[ -n ${UPDATE_GRYPE} ]]; then
+
+last_check=/var/tmp/check-grype-${version}
+if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
+  touch ${last_check}
+  echo "Updating anchore/grype image if necessary..." >&2
   docker pull anchore/grype:${version}
 fi
 
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock  -v grype-repo:/.cache/ -v "$(pwd)":/work --workdir /work anchore/grype:${version} "${@}"
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v grype-repo:/.cache/ -v "$(pwd)":/work --workdir /work anchore/grype:${version} "${@}"

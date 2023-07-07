@@ -1,7 +1,11 @@
 #! /bin/bash
 
 version=${CHECKOV_VERSION:-'latest'}
-if [[ -n ${UPDATE_CHECKOV} ]]; then
+
+last_check=/var/tmp/check-checkov-${version}
+if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
+  touch ${last_check}
+  echo "Updating bridgecrew/checkov image if necessary..." >&2
   docker pull bridgecrew/checkov:${version}
 fi
 

@@ -2,6 +2,7 @@
 
 Shell wrappers around Docker commands to run some Kubernetes tools I use.
 
+* aws
 * checkov
 * eksctl
 * grype
@@ -16,8 +17,5 @@ The version is assumed to be `latest` unless set via environment variable.
 CHECKOV_VERSION=2.2.20
 ```
 
-Set the environment variable for updates to pull on every run.
-
-```console
-UPDATE_GRYPE=anything
-```
+The image will be pulled if it hasn't been pulled in the last 12 hours. It will
+still honor the version setting.
