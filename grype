@@ -5,4 +5,4 @@ if [[ -n ${UPDATE_GRYPE} ]]; then
   docker pull anchore/grype:${version}
 fi
 
-docker run --rm -v grype-repo:/.cache/ -v "$(pwd)":/work --workdir /work anchore/grype:${version} "${@}"
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock  -v grype-repo:/.cache/ -v "$(pwd)":/work --workdir /work anchore/grype:${version} "${@}"
