@@ -5,4 +5,9 @@ if [[ -n ${AWS_PROFILE} ]]; then
   profile_opt="-e AWS_PROFILE=${AWS_PROFILE}"
 fi
 
-docker run --rm -i -v "${HOME}/.aws:/root/.aws" -v "$(pwd):/aws" ${profile_opt} amazon/aws-cli "${@}"
+unset auto_prompt_opt
+if [[ -n ${AWS_CLI_AUTO_PROMPT} ]]; then
+  profile_opt="-e AWS_CLI_AUTO_PROMPT=${AWS_CLI_AUTO_PROMPT}"
+fi
+
+docker run --rm -i -v "${HOME}/.aws:/root/.aws" -v "$(pwd):/aws" ${profile_opt} ${auto_prompt_opt} amazon/aws-cli "${@}"
