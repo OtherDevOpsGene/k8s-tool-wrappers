@@ -7,5 +7,8 @@ cd "$(dirname -- ${0})" || exit
 
 for script in aws checkov eksctl grype syft trivy
 do
-  install -v "${script}" "${dest}"
+  skip_script="SKIP_${script^^}"
+  if [[ -z "${!skip_script+x}" ]]; then
+    install -v "${script}" "${dest}"
+  fi
 done
