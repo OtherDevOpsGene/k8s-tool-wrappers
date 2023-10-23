@@ -1,0 +1,12 @@
+#! /bin/bash
+
+version=${CRANE_VERSION:-'latest'}
+
+last_check=/var/tmp/check-crane-${version}
+if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
+  touch ${last_check}
+  echo "Updating gcr.io/go-containerregistry/crane image if necessary..." >&2
+  docker pull gcr.io/go-containerregistry/crane:${version}
+fi
+
+docker run --rm gcr.io/go-containerregistry/crane:${version} "${@}"

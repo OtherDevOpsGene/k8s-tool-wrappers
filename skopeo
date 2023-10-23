@@ -1,0 +1,12 @@
+#! /bin/bash
+
+version=${SKOPEO_VERSION:-'latest'}
+
+last_check=/var/tmp/check-skopeo-${version}
+if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
+  touch ${last_check}
+  echo "Updating quay.io/skopeo/stable image if necessary..." >&2
+  docker pull quay.io/skopeo/stable:${version}
+fi
+
+docker run --rm --tty -v "$(pwd)":/work --workdir /work quay.io/skopeo/stable:${version} "${@}"

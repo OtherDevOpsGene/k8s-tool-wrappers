@@ -4,8 +4,11 @@ Shell wrappers around Docker commands to run some Kubernetes tools I use.
 
 * aws
 * checkov
+* cosign
+* crane
 * eksctl
 * grype
+* skopeo
 * syft
 * trivy
 

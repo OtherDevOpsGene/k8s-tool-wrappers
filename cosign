@@ -1,0 +1,12 @@
+#! /bin/bash
+
+version=${COSIGN_VERSION:-'latest'}
+
+last_check=/var/tmp/check-cosign-${version}
+if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
+  touch ${last_check}
+  echo "Updating gcr.io/projectsigstore/cosign image if necessary..." >&2
+  docker pull gcr.io/projectsigstore/cosign:${version}
+fi
+
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$(pwd)":/work --workdir /work gcr.io/projectsigstore/cosign:${version} "${@}"

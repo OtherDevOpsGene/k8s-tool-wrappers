@@ -5,7 +5,7 @@ dest="/usr/local/bin/"
 # switch to script directory
 cd "$(dirname -- ${0})" || exit
 
-for script in aws checkov eksctl grype syft trivy
+for script in aws checkov cosign crane eksctl grype skopeo syft trivy
 do
   skip_script="SKIP_${script^^}"
   if [[ -z "${!skip_script+x}" ]]; then
