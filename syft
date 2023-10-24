@@ -9,4 +9,4 @@ if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
   docker pull anchore/syft:${version}
 fi
 
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock  -v "$(pwd)":/work --workdir /work anchore/syft:${version} "${@}"
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$(pwd)":/work --workdir /work anchore/syft:${version} "${@}"
