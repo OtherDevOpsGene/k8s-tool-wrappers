@@ -1,0 +1,12 @@
+#! /bin/bash
+
+version=${CTOP_VERSION:-'latest'}
+
+last_check=/var/tmp/check-ctop-${version}
+if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
+  touch ${last_check}
+  echo "Updating quay.io/vektorlab/ctop image if necessary..." >&2
+  docker pull quay.io/vektorlab/ctop:${version}
+fi
+
+docker run --rm -ti -v /var/run/docker.sock:/var/run/docker.sock quay.io/vektorlab/ctop:${version} "${@}"

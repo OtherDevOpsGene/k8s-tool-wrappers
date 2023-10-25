@@ -6,6 +6,7 @@ Shell wrappers around Docker commands to run some Kubernetes tools I use.
 * checkov
 * cosign
 * crane
+* ctop
 * dive
 * eksctl
 * grype
