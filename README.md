@@ -10,6 +10,7 @@ Shell wrappers around Docker commands to run some Kubernetes tools I use.
 * eksctl
 * grype
 * skopeo
+* slim
 * syft
 * trivy
 

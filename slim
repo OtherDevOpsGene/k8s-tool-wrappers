@@ -1,0 +1,12 @@
+#! /bin/bash
+
+version=${SLIM_VERSION:-'latest'}
+
+last_check=/var/tmp/check-slim-${version}
+if [[ ! -f ${last_check} || $(find ${last_check} -type f -mmin +720) ]]; then
+  touch ${last_check}
+  echo "Updating dslim/slim image if necessary..." >&2
+  docker pull dslim/slim:${version}
+fi
+
+docker run --rm -ti -v /var/run/docker.sock:/var/run/docker.sock -v "$(pwd)":/work --workdir /work dslim/slim:${version} --in-container "${@}"
